@@ -244,10 +244,12 @@ def wraptext(text: str, width: int = 70, initial_indent: str = '', subsequent_in
         DeprecationWarning,
         stacklevel=2,
     )
-    wrapper = TextWrapper(width=width, initial_indent=initial_indent,
-                          subsequent_indent=subsequent_indent,
-                          break_long_words=False)
-    return wrapper.wrap(text)
+    return TextWrapper(
+        width=width,
+        initial_indent=initial_indent,
+        subsequent_indent=subsequent_indent,
+        break_long_words=False,
+    ).wrap(text)
 
 
 # TODO (Babel 3.x): Remove this re-export

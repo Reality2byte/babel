@@ -504,7 +504,7 @@ class Catalog:
             ('POT-Creation-Date', format_datetime(self.creation_date, 'yyyy-MM-dd HH:mmZ', locale='en')),
             ('PO-Revision-Date', revision_date),
             ('Last-Translator', self.last_translator),
-        ]
+        ]  # fmt: skip
         if self.locale_identifier:
             headers.append(('Language', str(self.locale_identifier)))
         headers.append(('Language-Team', language_team))
@@ -726,17 +726,14 @@ class Catalog:
                 # The new message adds pluralization
                 current.id = message.id
                 current.string = message.string
-            current.locations = list(distinct(current.locations +
-                                              message.locations))
-            current.auto_comments = list(distinct(current.auto_comments +
-                                                  message.auto_comments))
-            current.user_comments = list(distinct(current.user_comments +
-                                                  message.user_comments))
+            current.locations = [*distinct(current.locations + message.locations)]
+            current.auto_comments = [*distinct(current.auto_comments + message.auto_comments)]
+            current.user_comments = [*distinct(current.user_comments + message.user_comments)]
             current.flags |= message.flags
         elif id == '':
             # special treatment for the header message
             self.mime_headers = message_from_string(message.string).items()
-            self.header_comment = "\n".join([f"# {c}".rstrip() for c in message.user_comments])
+            self.header_comment = "\n".join(f"# {c}".rstrip() for c in message.user_comments)
             self.fuzzy = message.fuzzy
         else:
             if isinstance(id, (list, tuple)):
